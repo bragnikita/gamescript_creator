@@ -139,15 +139,20 @@ module GamescriptCreator
 
 
   class FileLineReader
-    def initialize(filename)
-      File.open filename do |f|
-        @lines = f.readlines
+    def initialize(file)
+      if file.is_a? String
+        File.open file do |f|
+          @lines = f.readlines
+        end
+      else
+        @lines = file.readlines
       end
       @cursor = 0
     end
 
     def next_line
       return nil if @cursor >= @lines.length
+
       line = @lines[@cursor]
       @cursor += 1
       line.delete_suffix("\n")
