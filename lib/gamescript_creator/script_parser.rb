@@ -159,13 +159,6 @@ module GamescriptCreator
     end
   end
 
-  def extract(regex, str)
-    m = regex.match str
-    if m.nil?
-      return nil
-    end
-    m[1]
-  end
 
   class FormattedLineParser
     attr_reader :model, :root
@@ -465,6 +458,14 @@ module GamescriptCreator
 
     def plain(plain_text)
       ParsedScriptModel::PlainText.new(plain_text)
+    end
+
+    def extract(regex, str)
+      m = regex.match str
+      if m.nil?
+        return nil
+      end
+      m[1]
     end
   end
 end
