@@ -56,17 +56,18 @@ RSpec.describe GamescriptCreator::FormattedLineParser do
     puts root.print
   end
   describe "without escaped symbols" do
-    let(:line) {"al fefw snikta (sfdds fsfdf ) !! *fdsfd* speco (afdsfsd!)"}
+    let(:line) {"*al* fefw snikta (sfdds fsfdf ) !! *fdsfd* speco (afdsfsd!)"}
     it 'should return root' do
       expect(root).to have_label("root")
-      expect(root.children).to have(6).items
+      expect(root.children).to have(7).items
       expect(root.parent).to be_nil
-      expect(root[0]).to have_label('plain').and have_type(NODE_PLAIN_TEXT)
-      expect(root[1]).to have_label('minds').and have_type(NODE_WRAP)
-      expect(root[2]).to have_label('plain').and have_type(NODE_PLAIN_TEXT)
-      expect(root[3]).to have_label('emotions').and have_type(NODE_WRAP)
-      expect(root[4]).to have_label('plain').and have_type(NODE_PLAIN_TEXT)
-      expect(root[5]).to have_label('minds').and have_type(NODE_WRAP)
+      expect(root[0]).to have_label('emotions').and have_type(NODE_WRAP)
+      expect(root[1]).to have_label('plain').and have_type(NODE_PLAIN_TEXT)
+      expect(root[2]).to have_label('minds').and have_type(NODE_WRAP)
+      expect(root[3]).to have_label('plain').and have_type(NODE_PLAIN_TEXT)
+      expect(root[4]).to have_label('emotions').and have_type(NODE_WRAP)
+      expect(root[5]).to have_label('plain').and have_type(NODE_PLAIN_TEXT)
+      expect(root[6]).to have_label('minds').and have_type(NODE_WRAP)
 
       expect(root.join_contents).to eq('al fefw snikta sfdds fsfdf  !! fdsfd speco afdsfsd!')
     end

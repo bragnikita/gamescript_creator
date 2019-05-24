@@ -141,7 +141,7 @@ module GamescriptCreator
   class FileLineReader
     def initialize(file)
       if file.is_a? String
-        File.open file do |f|
+        File.open file, 'r', encoding: "UTF-8" do |f|
           @lines = f.readlines
         end
       else
@@ -197,7 +197,9 @@ module GamescriptCreator
           index = m.length > 1 ? 1 : 0
         end
         content = m[index]
-        root << ParserNode.new(NODE_UNPARSED).with_content(line[0..m.begin(0)])
+        if m.begin(0) > 0
+          root << ParserNode.new(NODE_UNPARSED).with_content(line[0..m.begin(0)])
+        end
         root << ParserNode.new(NODE_WRAP, label).with_content(content)
         root << look_for_tag_by_regex(ParserNode.new(NODE_UNPARSED).with_content(line[m.end(0)..-1]), regex, label)
       else
@@ -232,7 +234,7 @@ module GamescriptCreator
           root.parent.remove(root)
         end
       end
-      root.children.each {|c| remove_empty_text_nodes c}
+      root.children.each { |c| remove_empty_text_nodes c }
       root
     end
 
@@ -286,7 +288,7 @@ module GamescriptCreator
     def remove_mid_node(node)
       index = children.index(node)
       children.insert(index, *node.children)
-      node.children.each {|c| c.parent = self}
+      node.children.each { |c| c.parent = self }
       self.remove(node)
     end
 
@@ -329,7 +331,7 @@ module GamescriptCreator
 
     def traverse_internal(root, &block)
       yield root
-      root.children.each {|c| traverse_internal(c, &block)}
+      root.children.each { |c| traverse_internal(c, &block) }
     end
   end
 
